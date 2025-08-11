@@ -20,6 +20,8 @@ sys.path.insert(0, str(project_root))
 # from ai_job_agent.core.agent import JobAgent as ApplicationAgent
 from ai_job_agent.config.settings import Settings
 from ai_job_agent.utils.logger import setup_logger
+from ai_job_agent.agents.job_search_agent import JobSearchAgent, JobSearchConfig
+from ai_job_agent.agents.application_agent import ApplicationAgent, ApplicationConfig
 
 def main():
     """
@@ -40,6 +42,14 @@ def main():
         
         # Start the job search and application process
         logger.info("Beginning automated job search and application process...")
+    # Minimal demo flow
+    jobs = job_search_agent.search({"title": "AI Engineer", "location": "Bengaluru"})
+    logger.info(f"Found {len(jobs)} jobs (demo).")
+    for job in jobs:
+        answers = application_agent.prepare_answers(job.dict())
+        success, history = application_agent.apply(job.job_id, answers)
+        logger.info(f"Applied to {job.company} - {job.title}: {history.status}")
+
         
         # TODO: Implement main workflow
         # 1. Search for jobs based on user criteria
