@@ -1,0 +1,60 @@
+# AI Job Agent Configuration
+
+# Application settings
+app:
+  name: "AI Job Agent"
+  version: "1.0.0"
+  debug: false
+  environment: "production"
+
+# Database configuration
+database:
+  type: "sqlite"
+  path: "data/jobs.db"
+  backup_interval: 86400  # 24 hours in seconds
+
+# API settings
+api:
+  host: "localhost"
+  port: 8000
+  timeout: 30
+  rate_limit: 100  # requests per minute
+
+# Job search configuration
+job_search:
+  max_results: 50
+  search_interval: 3600  # 1 hour in seconds
+  keywords:
+    - "python developer"
+    - "software engineer"
+    - "data scientist"
+  locations:
+    - "remote"
+    - "san francisco"
+    - "new york"
+
+# Notification settings
+notifications:
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: ""
+    password: ""
+  webhook:
+    enabled: false
+    url: ""
+
+# AI/LLM configuration
+ai:
+  provider: "openai"
+  model: "gpt-3.5-turbo"
+  max_tokens: 1000
+  temperature: 0.7
+  api_key: ""  # Set via environment variable
+
+# Data retention
+data_retention:
+  job_listings: 30  # days
+  application_history: 90  # days
+  logs: 7  # days
