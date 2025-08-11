@@ -21,7 +21,7 @@ class TestAgent:
         # TODO: Implement test for application process
         assert True
     
-    @patch('src.agents.job_search_agent')
+    @patch('ai_job_agent.agents.job_search_agent')
     def test_agent_with_mock(self, mock_agent):
         """Test agent with mocked dependencies."""
         # TODO: Implement test with mocked dependencies
