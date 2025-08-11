@@ -1,0 +1,175 @@
+{
+  "$schema": "https://schemas.modelcontextprotocol.org/mcp-config.schema.json",
+  "version": "1.0.0",
+  "description": "Model Context Protocol configuration for AI Job Agent",
+  
+  "servers": {
+    "job_search_server": {
+      "command": "python",
+      "args": ["-m", "ai_job_agent.mcp.job_search_server"],
+      "env": {
+        "LOG_LEVEL": "INFO"
+      },
+      "capabilities": {
+        "tools": true,
+        "resources": true,
+        "prompts": false
+      }
+    },
+    
+    "database_server": {
+      "command": "python",
+      "args": ["-m", "ai_job_agent.mcp.database_server"],
+      "env": {
+        "DATABASE_PATH": "data/jobs.db",
+        "LOG_LEVEL": "INFO"
+      },
+      "capabilities": {
+        "tools": true,
+        "resources": true,
+        "prompts": false
+      }
+    },
+    
+    "web_scraper_server": {
+      "command": "python",
+      "args": ["-m", "ai_job_agent.mcp.web_scraper_server"],
+      "env": {
+        "USER_AGENT": "AI-Job-Agent/1.0",
+        "REQUEST_DELAY": "1",
+        "LOG_LEVEL": "INFO"
+      },
+      "capabilities": {
+        "tools": true,
+        "resources": false,
+        "prompts": false
+      }
+    }
+  },
+  
+  "tools": {
+    "search_jobs": {
+      "description": "Search for job listings based on criteria",
+      "parameters": {
+        "keywords": {
+          "type": "string",
+          "description": "Job search keywords"
+        },
+        "location": {
+          "type": "string",
+          "description": "Job location or 'remote'"
+        },
+        "experience_level": {
+          "type": "string",
+          "enum": ["entry", "mid", "senior", "executive"],
+          "description": "Required experience level"
+        },
+        "max_results": {
+          "type": "integer",
+          "default": 50,
+          "description": "Maximum number of results to return"
+        }
+      },
+      "required": ["keywords"]
+    },
+    
+    "save_job": {
+      "description": "Save a job listing to the database",
+      "parameters": {
+        "title": {
+          "type": "string",
+          "description": "Job title"
+        },
+        "company": {
+          "type": "string",
+          "description": "Company name"
+        },
+        "location": {
+          "type": "string",
+          "description": "Job location"
+        },
+        "description": {
+          "type": "string",
+          "description": "Job description"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Job posting URL"
+        },
+        "salary_range": {
+          "type": "string",
+          "description": "Salary range if available"
+        }
+      },
+      "required": ["title", "company", "url"]
+    },
+    
+    "get_saved_jobs": {
+      "description": "Retrieve saved job listings from database",
+      "parameters": {
+        "limit": {
+          "type": "integer",
+          "default": 20,
+          "description": "Maximum number of jobs to retrieve"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["saved", "applied", "interview", "rejected", "offer"],
+          "description": "Filter by application status"
+        }
+      }
+    },
+    
+    "scrape_job_details": {
+      "description": "Scrape detailed information from a job posting URL",
+      "parameters": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the job posting to scrape"
+        },
+        "include_company_info": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to include company information"
+        }
+      },
+      "required": ["url"]
+    }
+  },
+  
+  "resources": {
+    "job_templates": {
+      "uri": "file://templates/",
+      "description": "Job application templates and cover letters",
+      "mimeType": "text/plain"
+    },
+    
+    "job_database": {
+      "uri": "sqlite://data/jobs.db",
+      "description": "Local job database",
+      "mimeType": "application/x-sqlite3"
+    }
+  },
+  
+  "client": {
+    "name": "ai_job_agent",
+    "version": "1.0.0",
+    "capabilities": {
+      "sampling": true,
+      "experimental": {
+        "multimodal": false
+      }
+    },
+    "timeout": 30000,
+    "retry_attempts": 3
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "file": "logs/mcp.log",
+    "max_size_mb": 10,
+    "backup_count": 5
+  }
+}
