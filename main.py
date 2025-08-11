@@ -14,10 +14,10 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from src.agents.job_search_agent import JobSearchAgent
-from src.agents.application_agent import ApplicationAgent
-from src.config.settings import Settings
-from src.utils.logger import setup_logger
+from ai_job_agent.agents.job_search_agent import JobSearchAgent
+from ai_job_agent.agents.application_agent import ApplicationAgent
+from ai_job_agent.config.settings import Settings
+from ai_job_agent.utils.logger import setup_logger
 
 def main():
     """
