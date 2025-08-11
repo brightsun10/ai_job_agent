@@ -14,8 +14,10 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from ai_job_agent.agents.job_search_agent import JobSearchAgent
-from ai_job_agent.agents.application_agent import ApplicationAgent
+# TODO: implement JobSearchAgent in ai_job_agent.core or a new module
+# from ai_job_agent.core.agent import JobAgent as JobSearchAgent
+# TODO: implement ApplicationAgent in ai_job_agent.core or a new module
+# from ai_job_agent.core.agent import JobAgent as ApplicationAgent
 from ai_job_agent.config.settings import Settings
 from ai_job_agent.utils.logger import setup_logger
 
